@@ -27,8 +27,9 @@
   }
 
   .screen {
-    padding: max(14px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right)) max(14px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
-    align-items: start;
+    padding: max(8px, env(safe-area-inset-top)) max(8px, env(safe-area-inset-right)) max(8px, env(safe-area-inset-bottom)) max(8px, env(safe-area-inset-left));
+    align-items: center;
+    overflow: hidden;
   }
 
   .menu-shell,
@@ -39,55 +40,56 @@
   .small-shell {
     width: 100%;
     max-width: none;
-    min-height: auto;
-    border-radius: 20px;
-    padding: 20px;
-    margin: auto 0;
+    max-height: calc(100dvh - max(16px, env(safe-area-inset-top)) - max(16px, env(safe-area-inset-bottom)));
+    min-height: 0;
+    overflow: hidden;
+    border-radius: 16px;
+    padding: clamp(10px, 2.2dvh, 16px);
+    margin: 0;
   }
 
-  h1 {
-    font-size: clamp(46px, 17vw, 76px);
-  }
+  h1 { font-size: clamp(34px, 12vw, 58px); line-height: .86; }
+  h2 { font-size: clamp(24px, 7.5vw, 36px); line-height: .95; }
+  h3 { margin-block: 4px; }
+  p { margin-block: 4px; }
 
-  h2 {
-    font-size: clamp(30px, 10vw, 46px);
-  }
-
-  .tagline {
-    font-size: 15px;
-    margin: 16px 0 22px;
-  }
+  .eyebrow { font-size: 9px; line-height: 1.1; }
+  .tagline { font-size: 12px; line-height: 1.25; margin: 8px 0 10px; }
 
   .menu-actions,
   .stack-actions,
-  .result-actions {
-    grid-template-columns: 1fr;
-  }
+  .result-actions { grid-template-columns: 1fr; gap: 6px; }
 
   .primary-button,
   .secondary-button,
   .danger-button {
-    min-height: 56px;
-    font-size: 14px;
+    min-height: 42px;
+    padding: 8px 12px;
+    font-size: 12px;
   }
 
   .menu-meta {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px 14px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px;
+    margin-top: 8px;
+    font-size: 9px;
   }
 
+  .menu-meta span { padding: 5px; min-width: 0; }
+  .menu-meta strong { display: block; font-size: 11px; }
+
   .version {
-    position: static;
-    margin-top: 18px;
-    text-align: right;
+    position: absolute;
+    right: max(10px, env(safe-area-inset-right));
+    bottom: max(6px, env(safe-area-inset-bottom));
+    margin: 0;
+    font-size: 8px;
   }
 
   .screen-heading,
-  .choice-heading {
-    gap: 12px;
-    margin-bottom: 18px;
-  }
+  .choice-heading { gap: 6px; margin-bottom: 8px; }
+  .screen-heading p { display: none; }
 
   .origin-grid,
   .choice-grid,
@@ -95,107 +97,76 @@
   .help-grid,
   .result-stats {
     grid-template-columns: 1fr;
+    gap: 6px;
+    overflow: hidden;
   }
 
   .origin-card,
   .choice-card,
-  .lab-card {
+  .lab-card,
+  .help-grid article {
     min-height: 0;
-    padding: 18px;
+    padding: 9px 11px;
   }
+
+  .origin-card p,
+  .choice-card p,
+  .lab-card p,
+  .help-grid article p { font-size: 10px; line-height: 1.2; }
+
+  .origin-bonus { gap: 3px; margin-top: 5px; }
+  .origin-bonus span, .tag { font-size: 8px; padding: 3px 5px; }
 
   .origin-icon {
-    width: 64px;
-    height: 64px;
-    margin-bottom: 14px;
-    font-size: 36px;
+    width: 38px;
+    height: 38px;
+    margin-bottom: 5px;
+    font-size: 23px;
   }
 
-  .hud {
-    padding: max(10px, env(safe-area-inset-top)) max(10px, env(safe-area-inset-right)) max(10px, env(safe-area-inset-bottom)) max(10px, env(safe-area-inset-left));
+  #origin-screen .origin-grid,
+  #level-screen .choice-grid,
+  #lab-screen .lab-grid,
+  #help-screen .help-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  .hud-left {
-    gap: 5px;
-    max-width: calc(100vw - 92px);
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
+  #help-screen .help-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  #lab-screen .lab-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
-  .hud-left::-webkit-scrollbar,
-  .build-strip::-webkit-scrollbar {
-    display: none;
-  }
+  .result-stats { grid-template-columns: repeat(2, 1fr); }
+  .result-stats > div { padding: 8px; }
+  .result-build { max-height: 18dvh; overflow: hidden; }
 
-  .brand-mini {
-    display: none;
-  }
-
-  .stat-pill {
-    min-width: 60px;
-    padding: 7px 9px;
-  }
-
-  .stat-pill span {
-    font-size: 8px;
-  }
-
-  .stat-pill strong {
-    font-size: 13px;
-  }
-
-  .bars {
-    width: min(68vw, 330px);
-    top: 62px;
-  }
-
-  .build-strip {
-    left: 10px;
-    right: 10px;
-    bottom: max(10px, env(safe-area-inset-bottom));
-    max-width: none;
-    overflow-x: auto;
-    flex-wrap: nowrap;
-    padding-bottom: 2px;
-  }
-
-  .build-chip {
-    flex: 0 0 auto;
-    font-size: 9px;
-  }
-
-  .icon-button {
-    width: 44px;
-    height: 44px;
-  }
-
-  .reroll-wrap {
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 6px;
-  }
-
-  .lab-footer {
-    align-items: stretch;
-    flex-direction: column;
-  }
-
-  .controls-line {
-    display: none;
-  }
+  .hud { padding: max(8px, env(safe-area-inset-top)) max(8px, env(safe-area-inset-right)) max(8px, env(safe-area-inset-bottom)) max(8px, env(safe-area-inset-left)); }
+  .hud-left { gap: 4px; max-width: calc(100vw - 84px); overflow-x: auto; scrollbar-width: none; }
+  .hud-left::-webkit-scrollbar, .build-strip::-webkit-scrollbar { display: none; }
+  .brand-mini { display: none; }
+  .stat-pill { min-width: 54px; padding: 6px 7px; }
+  .stat-pill span { font-size: 7px; }
+  .stat-pill strong { font-size: 12px; }
+  .bars { width: min(68vw, 330px); top: 56px; }
+  .build-strip { left: 8px; right: 8px; bottom: max(8px, env(safe-area-inset-bottom)); max-width: none; overflow-x: auto; flex-wrap: nowrap; padding-bottom: 2px; }
+  .build-chip { flex: 0 0 auto; font-size: 8px; }
+  .icon-button { width: 40px; height: 40px; }
+  .reroll-wrap { flex-direction: row; align-items: center; gap: 6px; }
+  .lab-footer { align-items: center; flex-direction: row; gap: 6px; }
+  .lab-footer span { display: none; }
+  .controls-line { display: none; }
 
   .gesture-controls-ready #hud::after {
     content: "DRAG TO MOVE · TAP TO DASH";
     position: absolute;
     left: 50%;
-    bottom: max(50px, calc(env(safe-area-inset-bottom) + 42px));
+    bottom: max(44px, calc(env(safe-area-inset-bottom) + 36px));
     transform: translateX(-50%);
-    padding: 7px 11px;
+    padding: 6px 9px;
     border: 1px solid rgba(255,255,255,.12);
     border-radius: 999px;
     background: rgba(5,8,18,.62);
     color: rgba(255,255,255,.66);
-    font-size: 9px;
+    font-size: 8px;
     font-weight: 900;
     letter-spacing: .08em;
     white-space: nowrap;
@@ -203,27 +174,50 @@
     animation: gesture-hint 4.5s forwards;
   }
 
-  @keyframes gesture-hint {
-    0%, 70% { opacity: 1; }
-    100% { opacity: 0; visibility: hidden; }
-  }
+  @keyframes gesture-hint { 0%, 70% { opacity: 1; } 100% { opacity: 0; visibility: hidden; } }
 }
 
 @media (max-width: 420px) {
-  .menu-meta {
-    grid-template-columns: 1fr;
-  }
-
   .menu-shell,
   .wide-shell,
   .choice-shell,
   .help-shell,
   .result-shell,
-  .small-shell {
-    padding: 16px;
+  .small-shell { padding: 9px; }
+
+  #origin-screen .origin-grid,
+  #level-screen .choice-grid { grid-template-columns: 1fr; }
+
+  #origin-screen .origin-card,
+  #level-screen .choice-card {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    column-gap: 8px;
+    align-items: center;
   }
 
-  .screen-heading .text-button {
-    padding-inline: 6px;
-  }
+  #origin-screen .origin-icon,
+  #level-screen .choice-icon { grid-row: 1 / span 4; margin: 0; }
+  #origin-screen .origin-card p,
+  #level-screen .choice-card p { display: none; }
+
+  #lab-screen .lab-grid,
+  #help-screen .help-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .screen-heading .text-button { padding-inline: 4px; }
+}
+
+@media (max-height: 700px) and (max-width: 760px) {
+  .tagline,
+  .menu-meta,
+  .version,
+  .origin-bonus,
+  .choice-card p,
+  .help-grid article p,
+  .result-subtitle { display: none !important; }
+
+  .menu-shell h1 { margin-bottom: 4px; }
+  .menu-actions { gap: 5px; }
+  .primary-button, .secondary-button, .danger-button { min-height: 38px; }
+  .screen-heading, .choice-heading { margin-bottom: 5px; }
+  .origin-card, .choice-card, .lab-card, .help-grid article { padding: 7px 8px; }
 }
