@@ -4,162 +4,29 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#070a14" />
-  <meta name="description" content="CHIMERA LOOP — a browser action roguelite about evolving broken builds." />
+  <meta name="description" content="CHIMERA LOOP — a living browser action roguelite about evolving broken builds." />
   <title>CHIMERA LOOP</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <main id="app">
-    <canvas id="game" width="1280" height="720" aria-label="CHIMERA LOOP game arena">
-      Your browser needs Canvas support to play CHIMERA LOOP.
-    </canvas>
-
+    <canvas id="game" width="1280" height="720" aria-label="CHIMERA LOOP game arena">Your browser needs Canvas support to play CHIMERA LOOP.</canvas>
     <section id="hud" class="hud hidden" aria-live="polite">
-      <div class="hud-left">
-        <div class="brand-mini">CHIMERA//LOOP</div>
-        <div class="stat-pill"><span>TIME</span><strong id="hud-time">00:00</strong></div>
-        <div class="stat-pill"><span>LEVEL</span><strong id="hud-level">1</strong></div>
-        <div class="stat-pill"><span>KILLS</span><strong id="hud-kills">0</strong></div>
-      </div>
-      <div class="hud-right">
-        <button id="pause-button" class="icon-button" aria-label="Pause game">Ⅱ</button>
-        <button id="mute-button" class="icon-button" aria-label="Toggle sound">♪</button>
-      </div>
-      <div class="bars">
-        <div class="bar hp-bar"><i id="hp-fill"></i><span id="hp-label">100 / 100</span></div>
-        <div class="bar xp-bar"><i id="xp-fill"></i><span id="xp-label">0 / 10</span></div>
-      </div>
+      <div class="hud-left"><div class="brand-mini">CHIMERA//LOOP</div><div class="stat-pill"><span>TIME</span><strong id="hud-time">00:00</strong></div><div class="stat-pill"><span>LEVEL</span><strong id="hud-level">1</strong></div><div class="stat-pill"><span>KILLS</span><strong id="hud-kills">0</strong></div></div>
+      <div class="hud-right"><button id="pause-button" class="icon-button" aria-label="Pause game">Ⅱ</button><button id="mute-button" class="icon-button" aria-label="Toggle sound">♪</button></div>
+      <div class="bars"><div class="bar hp-bar"><i id="hp-fill"></i><span id="hp-label">100 / 100</span></div><div class="bar xp-bar"><i id="xp-fill"></i><span id="xp-label">0 / 10</span></div></div>
       <div id="build-strip" class="build-strip" aria-label="Current mutations"></div>
     </section>
-
-    <section id="menu-screen" class="screen visible">
-      <div class="menu-shell glass">
-        <div class="eyebrow">EVOLVE · BREAK THE BUILD · DIE · ADAPT</div>
-        <h1><span>CHIMERA</span><em>LOOP</em></h1>
-        <p class="tagline">A six-minute action roguelite where every organ rewires the run.</p>
-        <div class="menu-actions">
-          <button id="play-button" class="primary-button">BEGIN INCUBATION</button>
-          <button id="lab-button" class="secondary-button">GENOME LAB <span id="gene-count">0 genes</span></button>
-          <button id="help-button" class="secondary-button">HOW TO PLAY</button>
-        </div>
-        <div class="menu-meta">
-          <span>Best survival <strong id="best-time">00:00</strong></span>
-          <span>Best kills <strong id="best-kills">0</strong></span>
-          <span>Bosses broken <strong id="boss-kills">0</strong></span>
-        </div>
-      </div>
-      <div class="version">BETA 0.2 · LOCAL SAVE</div>
-    </section>
-
-    <section id="origin-screen" class="screen">
-      <div class="wide-shell glass">
-        <div class="screen-heading">
-          <div>
-            <div class="eyebrow">SELECT A STARTING BODY</div>
-            <h2>Choose your origin</h2>
-          </div>
-          <button class="text-button" data-back="menu">← Back</button>
-        </div>
-        <div id="origin-grid" class="origin-grid"></div>
-      </div>
-    </section>
-
-    <section id="lab-screen" class="screen">
-      <div class="wide-shell glass lab-shell">
-        <div class="screen-heading">
-          <div>
-            <div class="eyebrow">PERMANENT METAPROGRESSION</div>
-            <h2>Genome Lab</h2>
-            <p>Genes survive death. Spend them on permanent adaptations.</p>
-          </div>
-          <div class="lab-balance"><strong id="lab-gene-count">0</strong><span>genes</span></div>
-          <button class="text-button" data-back="menu">← Back</button>
-        </div>
-        <div id="lab-grid" class="lab-grid"></div>
-        <div class="lab-footer">
-          <button id="reset-save-button" class="danger-button">RESET SAVE</button>
-          <span>Progress is stored only in this browser.</span>
-        </div>
-      </div>
-    </section>
-
-    <section id="level-screen" class="screen modal-screen" aria-modal="true" role="dialog">
-      <div class="choice-shell glass">
-        <div class="choice-heading">
-          <div>
-            <div class="eyebrow">MUTATION AVAILABLE</div>
-            <h2>Choose one adaptation</h2>
-          </div>
-          <div class="reroll-wrap"><span id="reroll-count">0 rerolls</span><button id="reroll-button" class="secondary-button compact">REROLL</button></div>
-        </div>
-        <div id="choice-grid" class="choice-grid"></div>
-      </div>
-    </section>
-
-    <section id="pause-screen" class="screen modal-screen" aria-modal="true" role="dialog">
-      <div class="small-shell glass">
-        <div class="eyebrow">SIMULATION SUSPENDED</div>
-        <h2>Paused</h2>
-        <div class="stack-actions">
-          <button id="resume-button" class="primary-button">RESUME</button>
-          <button id="restart-button" class="secondary-button">RESTART RUN</button>
-          <button id="quit-button" class="secondary-button">RETURN TO LAB</button>
-        </div>
-      </div>
-    </section>
-
-    <section id="gameover-screen" class="screen modal-screen" aria-modal="true" role="dialog">
-      <div class="result-shell glass">
-        <div class="result-title">
-          <div class="eyebrow" id="result-eyebrow">BODY TERMINATED</div>
-          <h2 id="result-title">The loop remembers.</h2>
-          <p id="result-subtitle">Your useful mutations have been stripped for research.</p>
-        </div>
-        <div class="result-stats">
-          <div><span>Survival</span><strong id="result-time">00:00</strong></div>
-          <div><span>Kills</span><strong id="result-kills">0</strong></div>
-          <div><span>Level</span><strong id="result-level">1</strong></div>
-          <div class="gene-result"><span>Genes recovered</span><strong id="result-genes">+0</strong></div>
-        </div>
-        <div id="result-build" class="result-build"></div>
-        <div class="result-actions">
-          <button id="again-button" class="primary-button">RUN IT AGAIN</button>
-          <button id="result-lab-button" class="secondary-button">GENOME LAB</button>
-          <button id="result-menu-button" class="secondary-button">MAIN MENU</button>
-        </div>
-      </div>
-    </section>
-
-    <section id="help-screen" class="screen modal-screen" aria-modal="true" role="dialog">
-      <div class="help-shell glass">
-        <div class="screen-heading">
-          <div>
-            <div class="eyebrow">FIELD MANUAL</div>
-            <h2>Grow something unfair</h2>
-          </div>
-          <button id="close-help-button" class="text-button">Close ×</button>
-        </div>
-        <div class="help-grid">
-          <article><b>1</b><h3>Move</h3><p>WASD or arrow keys. On touch screens, drag the left pad.</p></article>
-          <article><b>2</b><h3>Auto-hunt</h3><p>Your organs target nearby enemies. Positioning and dashing are your job.</p></article>
-          <article><b>3</b><h3>Mutate</h3><p>Collect biomass, level up, and choose one of three organs. Ranks and tags create synergies.</p></article>
-          <article><b>4</b><h3>Dash</h3><p>Space or the touch button. Dash through danger and trigger mutation effects.</p></article>
-          <article><b>5</b><h3>Break the run</h3><p>Compatible organs fuse into apex mutations that radically alter the build.</p></article>
-          <article><b>6</b><h3>Die usefully</h3><p>Recovered genes buy permanent upgrades in the Genome Lab.</p></article>
-        </div>
-        <div class="controls-line"><span><kbd>WASD</kbd> move</span><span><kbd>SPACE</kbd> dash</span><span><kbd>ESC</kbd> pause</span><span><kbd>M</kbd> mute</span></div>
-      </div>
-    </section>
-
-    <div id="toast-layer" class="toast-layer" aria-live="assertive"></div>
-
-    <div id="touch-controls" class="touch-controls" aria-hidden="true">
-      <div id="joystick" class="joystick"><i></i></div>
-      <button id="touch-dash" class="touch-dash">DASH</button>
-    </div>
-
-    <div id="test-output" hidden></div>
+    <section id="menu-screen" class="screen visible"><div class="menu-shell glass"><div class="eyebrow">EVOLVE · HUNT · LOOT · BREAK THE LOOP</div><h1><span>CHIMERA</span><em>LOOP</em></h1><p class="tagline">A living action roguelite of mutations, objectives, loot and apex predators.</p><div class="menu-actions"><button id="play-button" class="primary-button">BEGIN INCUBATION</button><button id="lab-button" class="secondary-button">GENOME LAB <span id="gene-count">0 genes</span></button><button id="help-button" class="secondary-button">HOW TO PLAY</button></div><div class="menu-meta"><span>Best survival <strong id="best-time">00:00</strong></span><span>Best kills <strong id="best-kills">0</strong></span><span>Bosses broken <strong id="boss-kills">0</strong></span></div></div><div class="version">BETA 0.3 · LIVING ABYSS</div></section>
+    <section id="origin-screen" class="screen"><div class="wide-shell glass"><div class="screen-heading"><div><div class="eyebrow">SELECT A STARTING BODY</div><h2>Choose your origin</h2></div><button class="text-button" data-back="menu">← Back</button></div><div id="origin-grid" class="origin-grid"></div></div></section>
+    <section id="lab-screen" class="screen"><div class="wide-shell glass lab-shell"><div class="screen-heading"><div><div class="eyebrow">PERMANENT METAPROGRESSION</div><h2>Genome Lab</h2><p>Genes survive death. Spend them on permanent adaptations.</p></div><div class="lab-balance"><strong id="lab-gene-count">0</strong><span>genes</span></div><button class="text-button" data-back="menu">← Back</button></div><div id="lab-grid" class="lab-grid"></div><div class="lab-footer"><button id="reset-save-button" class="danger-button">RESET SAVE</button><span>Progress is stored only in this browser.</span></div></div></section>
+    <section id="level-screen" class="screen modal-screen" aria-modal="true" role="dialog"><div class="choice-shell glass"><div class="choice-heading"><div><div class="eyebrow">MUTATION AVAILABLE</div><h2>Choose one adaptation</h2></div><div class="reroll-wrap"><span id="reroll-count">0 rerolls</span><button id="reroll-button" class="secondary-button compact">REROLL</button></div></div><div id="choice-grid" class="choice-grid"></div></div></section>
+    <section id="pause-screen" class="screen modal-screen" aria-modal="true" role="dialog"><div class="small-shell glass"><div class="eyebrow">SIMULATION SUSPENDED</div><h2>Paused</h2><div class="stack-actions"><button id="resume-button" class="primary-button">RESUME</button><button id="restart-button" class="secondary-button">RESTART RUN</button><button id="quit-button" class="secondary-button">RETURN TO LAB</button></div></div></section>
+    <section id="gameover-screen" class="screen modal-screen" aria-modal="true" role="dialog"><div class="result-shell glass"><div class="result-title"><div class="eyebrow" id="result-eyebrow">BODY TERMINATED</div><h2 id="result-title">The loop remembers.</h2><p id="result-subtitle">Your useful mutations have been stripped for research.</p></div><div class="result-stats"><div><span>Survival</span><strong id="result-time">00:00</strong></div><div><span>Kills</span><strong id="result-kills">0</strong></div><div><span>Level</span><strong id="result-level">1</strong></div><div class="gene-result"><span>Genes recovered</span><strong id="result-genes">+0</strong></div></div><div id="result-build" class="result-build"></div><div class="result-actions"><button id="again-button" class="primary-button">RUN IT AGAIN</button><button id="result-lab-button" class="secondary-button">GENOME LAB</button><button id="result-menu-button" class="secondary-button">MAIN MENU</button></div></div></section>
+    <section id="help-screen" class="screen modal-screen" aria-modal="true" role="dialog"><div class="help-shell glass"><div class="screen-heading"><div><div class="eyebrow">FIELD MANUAL</div><h2>Grow something unfair</h2></div><button id="close-help-button" class="text-button">Close ×</button></div><div class="help-grid"><article><b>1</b><h3>Move</h3><p>WASD or arrow keys. On touch screens, drag the left pad.</p></article><article><b>2</b><h3>Auto-hunt</h3><p>Your organs target nearby enemies. Positioning and dashing are your job.</p></article><article><b>3</b><h3>Mutate visibly</h3><p>Mutations change both your build and the body drawn on screen.</p></article><article><b>4</b><h3>Take risks</h3><p>Enter shrines, open caches, complete timed hunts and collect rare organs.</p></article><article><b>5</b><h3>Break bosses</h3><p>Wardens arrive at 90 and 210 seconds and move the run into a new biome.</p></article><article><b>6</b><h3>Fuse apex organs</h3><p>Compatible mutations unlock singularity, storm, bone and plague apex forms.</p></article></div><div class="controls-line"><span><kbd>WASD</kbd> move</span><span><kbd>SPACE</kbd> dash</span><span><kbd>ESC</kbd> pause</span><span><kbd>M</kbd> mute</span></div></div></section>
+    <div id="toast-layer" class="toast-layer" aria-live="assertive"></div><div id="touch-controls" class="touch-controls" aria-hidden="true"><div id="joystick" class="joystick"><i></i></div><button id="touch-dash" class="touch-dash">DASH</button></div><div id="test-output" hidden></div>
   </main>
+  <script src="packed-v3/runtime.js"></script>
   <script src="game.js"></script>
 </body>
 </html>
