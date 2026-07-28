@@ -1,0 +1,52 @@
+name: Browser smoke test
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  menu-navigation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install Playwright
+        run: |
+          npm init -y
+          npm install playwright@1.55.0
+          npx playwright install --with-deps chromium
+
+      - name: Start static server
+        run: |
+          python3 -m http.server 4173 > server.log 2>&1 &
+          echo $! > server.pid
+          for i in {1..20}; do
+            curl --fail --silent http://127.0.0.1:4173/ > /dev/null && exit 0
+            sleep 1
+          done
+          cat server.log
+          exit 1
+
+      - name: Exercise all menu paths
+        run: node smoke.mjs
+
+      - name: Upload diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: browser-smoke-diagnostics
+          path: |
+            smoke-success.png
+            smoke-failure.png
+            browser-diagnostics.txt
+            server.log
+          if-no-files-found: ignore
